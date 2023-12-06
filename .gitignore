@@ -289,4 +289,7 @@ pyrightconfig.json
 *.3dm
 *.max
 
+# Others
+.trunk
+
 # End of https://www.toptal.com/developers/gitignore/api/macos,visualstudiocode,python
