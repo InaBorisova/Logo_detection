@@ -22,7 +22,7 @@ DST_DIR = Path("./data")
 # Folder for the train, val and test split images
 OUTPUT_DIR = Path("output")
 # batch size
-batch = 32
+batch = 10
 # Device
 device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 # The number of Logo brands on the dataset
@@ -95,8 +95,9 @@ def create_symlinks(source_folder, destination_folder, file_list):
         file_list: list of images to be moved through symlinks
     """
     for file_name in file_list:
-        print(source_folder)
-        source_path = os.path.join(source_folder, file_name)
+        # print(source_folder)
+        # source_path = os.path.join(source_folder, file_name)
+        source_path = os.path.abspath(os.path.join(source_folder, file_name))
         destination_path = os.path.join(destination_folder, file_name)
 
         # Check if image is already linked
@@ -106,8 +107,8 @@ def create_symlinks(source_folder, destination_folder, file_list):
             # print(f"Source path: {source_path}")
             # print(f"Destination path: {destination_path}")
             os.makedirs(destination_folder, exist_ok=True)
-            # os.symlink(source_path, destination_folder) # Error opening image: [Errno 2] No such file or directory: 'output/train/Nike/07705525.jpg'
-            shutil.copy2(source_path, destination_folder)
+            os.symlink(source_path, destination_path) # Error opening image: [Errno 2] No such file or directory: 'output/train/Nike/07705525.jpg'
+            # shutil.copy2(source_path, destination_folder)
 
 
 def create_train_val_test_folders():
@@ -152,8 +153,8 @@ def train_val_test_split(train_folder, validation_folder, test_folder):
             random.shuffle(images)
 
             number_of_images = len(images)
-            train_split = int(0.8 * number_of_images)
-            val_split = int(0.1 * number_of_images)
+            train_split = int(0.6 * number_of_images)
+            val_split = int(0.3 * number_of_images)
             # test_split = int(0.1 * number_of_images)
 
             train_set = images[:train_split]
